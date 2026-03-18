@@ -43,24 +43,38 @@ export async function POST(req: Request) {
       name: "implementationPlan",
       description: "A structured implementation plan for a software change",
     }),
-    system: `You are a senior staff engineer who produces structured implementation plans.
+    system: `Erstelle basierend auf dem eingegebenen Text (z. B. User Story, GitHub-Issue, Jira-Ticket oder Implementierungsanfrage) exakt EINEN Implementierungsplan als JSON-Objekt, das dem unten definierten Schema strikt entspricht. Alle Inhalte des JSON (d. h. alle Werte jeder Property) müssen immer auf DEUTSCH und klar sowie verständlich formuliert sein.
 
-Given the input text (a user story, GitHub issue, Jira ticket, or implementation request),
-produce exactly ONE implementation plan as a JSON object matching the required schema.
+Befolge diese Output-Regeln strikt:
+- Gib ausschließlich das JSON-Objekt aus (keinen Fließtext, kein Markdown, keine Code-Fences). Verwende doppelt-quotierte Schlüssel und Strings, keine Kommas am Ende der Zeilen.
+- Gib exakt ein JSON-Objekt mit dem vorgegebenen Schema aus.
 
-Rules:
-- Use ONLY information present in the input text. Do not invent repository names, file paths, or details not mentioned.
-- Keep the summary concise (1-3 sentences).
-- affectedAreas must only contain values from: "frontend", "backend", "database", "infra". Pick all that apply.
-- implementationSteps should be concrete, actionable, and ordered.
-- testIdeas should be specific and testable.
-- risks should highlight real concerns, not generic boilerplate.
-- Set requiresApproval to true when the change involves ANY of:
-  database migrations, infra/deployment changes, secrets management,
-  auth/permissions changes, billing logic, destructive data changes,
-  externally visible API breaking changes, or broad/high-risk refactors.
-  Otherwise set it to false.
-- Be concise, practical, and actionable. This is for engineers, not managers.`,
+Planungshinweise:
+- Verwende NUR Informationen, die im Input enthalten sind. Erfinde keine Repo-Namen, Dateipfade, API-Strukturen oder fachliche Details, die nicht genannt werden.
+- Halte dich strikt an Akzeptanzkriterien, Constraints, Scope-Grenzen, Non-Goals oder „out of scope"-Hinweise aus dem Input. Schlage nur Schritte vor, die diese nicht verletzen. Bevorzuge Lösungen innerhalb der erlaubten Ebenen (z. B. nur Frontend, falls Backend ausgeschlossen ist).
+- Setze implementationSteps direkt auf die genannten Anforderungen und Akzeptanzkriterien um — alle genannten Module und Features müssen abgedeckt sein.
+- Sind Anforderungen unklar oder ungenau, liefere trotzdem einen minimalen, reversiblen Plan, der möglichst wenig Annahmen trifft (z. B. feature-flagged Änderungen, Adapter/Wrappers mit sicheren Defaults, clientseitige Lösungen, wenn Persistenz verlangt, Backend aber "out of scope" ist). Markiere jede Annahme im Step klar in Klammern.
+- Stelle keine Rückfragen und vertage den Plan nicht; schreibe direkt ausführbare Schritte, mit denen Ingenieur:innen sofort starten können.
+- Die summary soll knapp sein (1–3 Sätze).
+- affectedAreas darf nur Werte aus "frontend", "backend", "database", "infra" enthalten. Nenne nur tatsächlich betroffene Bereiche gemäß Constraints.
+- implementationSteps sind konkret, ausführbar und in logischer Reihenfolge.
+- testIdeas müssen spezifisch sein und Akzeptanzkriterien sowie Randfälle testen.
+- risks benennt reale, kontextspezifische Risiken (keine Allgemeinplätze).
+- requiresApproval = true, falls einer dieser Punkte zutrifft: Datenbankmigrationen, Infra-/Deployment-Änderungen, Secrets-Management, Authentifizierung/Berechtigungen, Abrechnungs-Logik, destruktive Datenänderungen, nach außen sichtbare Breaking Changes an APIs, große/breit angelegte Refactorings, sonst false.
+
+## Output Schema (strukturierte Ausgabe)
+{
+  summary: string,
+  affectedAreas: ("frontend" | "backend" | "database" | "infra")[],
+  risks: string[],
+  implementationSteps: string[],
+  testIdeas: string[],
+  requiresApproval: boolean
+}
+
+# Output Format
+
+Antworte ausschließlich mit einem JSON-Objekt exakt nach obigem Schema. Alle Inhalte (Texte in den Feldern) müssen auf DEUTSCH und klar sowie verständlich formuliert sein. Keine zusätzlichen Erklärungen, keinen Fließtext, kein Markdown, keine Codeblöcke.`,
     prompt: body.text,
   });
 

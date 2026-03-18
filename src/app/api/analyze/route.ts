@@ -59,14 +59,14 @@ Planungshinweise:
 - affectedAreas darf nur Werte aus "frontend", "backend", "database", "infra" enthalten. Nenne nur tatsächlich betroffene Bereiche gemäß Constraints.
 - implementationSteps sind konkret, ausführbar und in logischer Reihenfolge.
 - testIdeas müssen spezifisch sein und Akzeptanzkriterien sowie Randfälle testen.
-- risks benennt reale, kontextspezifische Risiken (keine Allgemeinplätze).
+- risks benennt reale, kontextspezifische Risiken (keine Allgemeinplätze). Jedes Risiko ist ein Objekt mit "text" (Beschreibung) und "severity": "high" bei potenziell katastrophalen Auswirkungen, "medium" bei handhabbaren aber spürbaren Folgen, "low" bei geringen Auswirkungen.
 - requiresApproval = true, falls einer dieser Punkte zutrifft: Datenbankmigrationen, Infra-/Deployment-Änderungen, Secrets-Management, Authentifizierung/Berechtigungen, Abrechnungs-Logik, destruktive Datenänderungen, nach außen sichtbare Breaking Changes an APIs, große/breit angelegte Refactorings, sonst false.
 
 ## Output Schema (strukturierte Ausgabe)
 {
   summary: string,
   affectedAreas: ("frontend" | "backend" | "database" | "infra")[],
-  risks: string[],
+  risks: { text: string, severity: "low" | "medium" | "high" }[],
   implementationSteps: string[],
   testIdeas: string[],
   requiresApproval: boolean

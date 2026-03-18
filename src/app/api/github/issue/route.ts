@@ -4,6 +4,8 @@ import {
 } from "@/lib/github";
 import type { GitHubIssuePreview } from "@/lib/types";
 
+export const runtime = "edge";
+
 export async function POST(req: Request) {
   let body: unknown;
   try {

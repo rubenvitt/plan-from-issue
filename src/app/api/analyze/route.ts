@@ -2,6 +2,8 @@ import { streamText, Output } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { implementationPlanSchema } from "@/lib/implementation-plan-schema";
 
+export const runtime = "edge";
+
 export async function POST(req: Request) {
   const apiKey =
     req.headers.get("x-provider-api-key") || process.env.OPENAI_API_KEY;

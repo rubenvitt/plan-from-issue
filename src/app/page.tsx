@@ -12,6 +12,7 @@ import { loadSettings, saveSettings, clearSettings } from "@/lib/storage";
 import { SettingsPanel } from "@/components/settings-panel";
 import { PlanViewer } from "@/components/plan-viewer";
 import { PlanCanvas, type EditablePlan } from "@/components/plan-canvas";
+import { MockupPreview } from "@/components/mockup-preview";
 
 const SEED_EXAMPLES = [
   {
@@ -307,14 +308,26 @@ export default function Home() {
 
           {/* Results */}
           {object ? (
-            <PlanViewer
-              plan={object}
-              isLoading={isLoading}
-              error={displayError}
-              onOpenCanvas={
-                canvasPlan ? () => setCanvasOpen(true) : undefined
-              }
-            />
+            <>
+              <PlanViewer
+                plan={object}
+                isLoading={isLoading}
+                error={displayError}
+                onOpenCanvas={
+                  canvasPlan ? () => setCanvasOpen(true) : undefined
+                }
+              />
+
+              {/* UI Mockup Preview — visible when plan is loaded and has frontend area */}
+              {(canvasPlan || resolvedPlan)?.affectedAreas?.includes(
+                "frontend"
+              ) && (
+                <MockupPreview
+                  plan={(canvasPlan || resolvedPlan)!}
+                  settings={settings}
+                />
+              )}
+            </>
           ) : isLoading ? (
             <div className="space-y-4">
               <div className="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg">

@@ -282,7 +282,7 @@ export default function Home() {
           </div>
 
           {/* Action buttons */}
-          <div className="mb-8 flex gap-3">
+          <div className="mb-10 flex gap-3 pb-8 border-b border-zinc-200 dark:border-zinc-800">
             <button
               onClick={handleAnalyze}
               disabled={!canAnalyze}

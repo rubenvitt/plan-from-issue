@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Plan from Issue
 
-## Getting Started
+AI-gestützte Analyse von User Stories, GitHub Issues oder Ticket-Beschreibungen — generiert strukturierte Implementierungspläne als gestreamtes JSON.
 
-First, run the development server:
+## Features
+
+- **Zwei Eingabemodi** — Text manuell eingeben oder ein GitHub Issue per URL importieren
+- **Streaming-Analyse** — Implementierungsplan wird in Echtzeit via AI SDK gestreamt
+- **Strukturierter Output** — Summary, betroffene Bereiche, Risiken (mit Severity), Implementierungsschritte, Test-Ideen, Approval-Gate
+- **Editierbarer Canvas** — Plan nach der Generierung interaktiv bearbeiten
+- **UI-Mockup-Vorschau** — Generative UI-Vorschau für Pläne mit Frontend-Bezug
+- **Flexibler Provider** — Beliebiger OpenAI-kompatibler Provider (API Key, Model ID, Base URL konfigurierbar)
+- **Dark Mode** — Vollständig unterstützt
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, Edge Runtime)
+- [AI SDK](https://sdk.vercel.ai) (`ai`, `@ai-sdk/openai`, `@ai-sdk/react`)
+- [Zod](https://zod.dev) 4 für Schema-Validierung
+- [Tailwind CSS](https://tailwindcss.com) 4
+- React 19 mit React Compiler
+
+## Quickstart
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App läuft auf [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Konfiguration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Alle Einstellungen werden im Browser (localStorage) gespeichert und über das Settings-Panel in der UI konfiguriert:
 
-## Learn More
+| Einstellung | Beschreibung | Default |
+|---|---|---|
+| Provider API Key | OpenAI (oder kompatibler) API Key | — |
+| Model ID | Modell-Bezeichner | `gpt-4.1` |
+| Base URL | Optionale Base URL für alternative Provider | — |
+| GitHub Token | Optionaler Token für private Repos / höhere Rate Limits | — |
 
-To learn more about Next.js, take a look at the following resources:
+Alternativ kann `OPENAI_API_KEY` als Umgebungsvariable gesetzt werden — dann ist kein Key in der UI nötig.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Projektstruktur
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── page.tsx                  # Hauptseite (Client Component)
+│   └── api/
+│       ├── analyze/route.ts      # Streaming-Analyse (Edge)
+│       ├── github/issue/route.ts # GitHub Issue Fetch (Edge)
+│       └── generate-ui/route.ts  # Generative UI Mockup (Edge)
+├── components/
+│   ├── plan-viewer.tsx           # Streaming-Anzeige des Plans
+│   ├── plan-canvas.tsx           # Editierbarer Canvas
+│   ├── mockup-preview.tsx        # UI-Mockup-Vorschau
+│   ├── settings-panel.tsx        # Einstellungen
+│   ├── editable-field.tsx        # Inline-Edit-Komponente
+│   ├── risk-panel.tsx            # Risiko-Anzeige
+│   └── approval-gate.tsx         # Approval-Indikator
+└── lib/
+    ├── types.ts                  # Shared Types
+    ├── github.ts                 # GitHub URL Parsing & Validation
+    ├── storage.ts                # localStorage Wrapper
+    └── implementation-plan-schema.ts  # Zod Schema für den Plan
+```

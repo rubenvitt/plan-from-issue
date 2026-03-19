@@ -36,7 +36,7 @@ Alle Einstellungen werden im Browser (localStorage) gespeichert und über das Se
 | Einstellung | Beschreibung | Default |
 |---|---|---|
 | Provider API Key | OpenAI (oder kompatibler) API Key | — |
-| Model ID | Modell-Bezeichner | `gpt-4.1` |
+| Model ID | Modell-Bezeichner | `gpt-5.4` |
 | Base URL | Optionale Base URL für alternative Provider | — |
 | GitHub Token | Optionaler Token für private Repos / höhere Rate Limits | — |
 

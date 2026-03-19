@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   }
 
   const rawBaseUrl = req.headers.get("x-provider-base-url");
-  const modelId = req.headers.get("x-model-id") || "gpt-4.1";
+  const modelId = req.headers.get("x-model-id") || "gpt-5.4";
 
   const provider = createOpenAI({
     apiKey,

@@ -84,7 +84,7 @@ export default function Home() {
     schema: implementationPlanSchema,
     headers: {
       "x-provider-api-key": settings.providerApiKey,
-      "x-model-id": settings.modelId || "gpt-4.1",
+      "x-model-id": settings.modelId || "gpt-5.4",
       ...(settings.baseUrl ? { "x-provider-base-url": settings.baseUrl } : {}),
     },
     onError: (err) => setError(err.message),

@@ -17,7 +17,7 @@ export interface LocalSettings {
 
 export const DEFAULT_SETTINGS: LocalSettings = {
   providerApiKey: "",
-  modelId: "gpt-4.1",
+  modelId: "gpt-5.4",
   baseUrl: "",
   githubToken: "",
 };

@@ -69,7 +69,7 @@ export function SettingsPanel({
               type="text"
               value={settings.modelId}
               onChange={(e) => onUpdate("modelId", e.target.value)}
-              placeholder="gpt-4.1"
+              placeholder="gpt-5.4"
               className="w-full rounded border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
             />
           </div>

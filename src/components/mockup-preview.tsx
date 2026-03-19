@@ -72,7 +72,7 @@ export function MockupPreview({
         api: "/api/generate-ui",
         headers: {
           "x-provider-api-key": settings.providerApiKey,
-          "x-model-id": settings.modelId || "gpt-4.1",
+          "x-model-id": settings.modelId || "gpt-5.4",
           ...(settings.baseUrl
             ? { "x-provider-base-url": settings.baseUrl }
             : {}),
